@@ -20,7 +20,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="mx-8  sm:mx-20 lg:mx-36">
+      <body className="mx-8  sm:mx-20 lg:mx-32">
         <Nav user={session?.user} expires={session?.expires as string} />
         {children}
       </body>
