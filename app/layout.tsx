@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Nav from "./components/Nav";
 import { getServerSession } from "next-auth";
@@ -20,7 +19,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="mx-8  sm:mx-20 lg:mx-32">
+      <body className="mx-8  sm:mx-20 lg:mx-32 ">
         <Nav user={session?.user} expires={session?.expires as string} />
         {children}
       </body>
