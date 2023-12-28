@@ -4,8 +4,13 @@ import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import Cart from "./Cart";
+import { useCartStore } from "@/store";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 
 export default function Nav({ user }: Session) {
+  const cartStore = useCartStore();
+
   return (
     <nav className="flex justify-between items-center py-8">
       <Link href={"/"}>
@@ -13,6 +18,12 @@ export default function Nav({ user }: Session) {
       </Link>
 
       <ul className="flex items-center gap-6">
+        <li className="flex items-center text-3xl relative cursor-pointer">
+          <ShoppingBagIcon className="h-6 w-6 " />
+          <span className="bg-[#1c4e4e] text-white text-sm font-bold w-5 h-5 rounded-full absolute left-3 bottom-3 flex items-center justify-center">
+            {cartStore.cart.length}
+          </span>
+        </li>
         {!user && (
           <div>
             <li className="bg-[#1c4e4e] text-white py-1 px-4 rounded-md">
@@ -27,16 +38,16 @@ export default function Nav({ user }: Session) {
               <Image
                 src={user?.image as string}
                 alt={user?.name as string}
-                width={45}
-                height={45}
+                width={30}
+                height={30}
                 className="rounded-full"
               />
             </li>
-
-            <li>Dashboard</li>
           </>
         )}
       </ul>
+
+      {cartStore.isOpen && <Cart />}
     </nav>
   );
 }
