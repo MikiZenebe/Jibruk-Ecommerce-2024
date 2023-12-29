@@ -18,7 +18,11 @@ export default function Nav({ user }: Session) {
       </Link>
 
       <ul className="flex items-center gap-6">
-        <li className="flex items-center text-3xl relative cursor-pointer">
+        {/* Toggle the cart */}
+        <li
+          onClick={() => cartStore.toggleCart()}
+          className="flex items-center text-3xl relative cursor-pointer"
+        >
           <ShoppingBagIcon className="h-6 w-6 " />
           <span className="bg-[#1c4e4e] text-white text-sm font-bold w-5 h-5 rounded-full absolute left-3 bottom-3 flex items-center justify-center">
             {cartStore.cart.length}

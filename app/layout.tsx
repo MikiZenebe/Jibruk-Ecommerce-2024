@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "./components/Nav";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import Hydrate from "./components/Hydrate";
 
 export const metadata: Metadata = {
   title: "Jibruk E-Commerce",
@@ -20,8 +21,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="mx-8  sm:mx-20 lg:mx-32 ">
-        <Nav user={session?.user} expires={session?.expires as string} />
-        {children}
+        <Hydrate>
+          <Nav user={session?.user} expires={session?.expires as string} />
+          {children}
+        </Hydrate>
       </body>
     </html>
   );
