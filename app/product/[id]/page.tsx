@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { SearchParamTypes } from "@/types/SearchParamsTypes";
 import formatPrice from "@/util/priceFormat";
+import AddCart from "./AddCart";
 
 export default function ProductDetail({ searchParams }: SearchParamTypes) {
   console.log(searchParams);
@@ -24,9 +25,7 @@ export default function ProductDetail({ searchParams }: SearchParamTypes) {
           </p>
         </div>
 
-        <button className="my-12 text-white py-2 px-6 font-medium rounded-md bg-[#1c4e4e]">
-          Add to cart
-        </button>
+        <AddCart {...searchParams} />
       </div>
     </div>
   );
