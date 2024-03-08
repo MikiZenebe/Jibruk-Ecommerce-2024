@@ -16,6 +16,11 @@ export default function Cart() {
         className="bg-white absolute right-0 top-0 w-1/4 h-screen p-12 overflow-y-scroll text-gray-700"
       >
         <h1>Here's your shopping list 📃</h1>
+        {cartStore.cart.map((item) => (
+          <div>
+            <Image src={item.image} alt={item.name} width={120} height={120} />
+          </div>
+        ))}
       </div>
     </div>
   );
