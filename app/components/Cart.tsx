@@ -9,6 +9,11 @@ import cartIcon from "@/public/shopping-cart.png";
 export default function Cart() {
   const cartStore = useCartStore();
 
+  //Total Price
+  const totalPrice = cartStore.cart.reduce((acc, item) => {
+    return acc + item.unit_amount! * item.quantity!;
+  }, 0);
+
   return (
     <div
       onClick={() => cartStore.toggleCart()}
@@ -69,10 +74,15 @@ export default function Cart() {
           </div>
         ))}
 
+        {/* Checkout and Total */}
+
         {cartStore.cart.length > 0 && (
-          <button className="py-2 mt-4 bg-[#1c4e4e] w-full rounded-md text-white">
-            Checkout
-          </button>
+          <>
+            <p>Total: {formatPrice(totalPrice)}</p>
+            <button className="py-2 mt-4 bg-[#1c4e4e] w-full rounded-md text-white">
+              Checkout
+            </button>
+          </>
         )}
 
         {!cartStore.cart.length && (
