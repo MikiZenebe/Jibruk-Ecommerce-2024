@@ -5,6 +5,7 @@ import { useCartStore } from "@/store";
 import formatPrice from "@/util/priceFormat";
 import { IoAddCircle, IoRemoveCircle } from "react-icons/io5";
 import cartIcon from "@/public/shopping-cart.png";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Cart() {
   const cartStore = useCartStore();
@@ -15,17 +16,21 @@ export default function Cart() {
   }, 0);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       onClick={() => cartStore.toggleCart()}
       className="fixed w-full h-screen left-0 top-0 bg-black/25 backdrop-blur-[1px]"
     >
-      <div
+      <motion.div
+        layout
         onClick={(e) => e.stopPropagation()}
         className="bg-white absolute right-0 top-0 w-2/4 md:w-[450px] h-screen p-12 overflow-y-scroll text-gray-700"
       >
         <h1>Here's your shopping list 📃</h1>
         {cartStore.cart.map((item) => (
-          <div className="flex py-4 gap-4">
+          <motion.div layout key={item.id} className="flex py-4 gap-4">
             <Image
               className="rounded-md h-24 object-cover w-auto"
               src={item.image}
@@ -33,7 +38,7 @@ export default function Cart() {
               width={120}
               height={120}
             />
-            <div>
+            <motion.div layout>
               <h2>{item.name}</h2>
 
               {/* Update quantitiy of a product */}
@@ -70,28 +75,34 @@ export default function Cart() {
               <p className="text-sm">
                 {item.unit_amount && formatPrice(item.unit_amount)}
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ))}
 
         {/* Checkout and Total */}
-
         {cartStore.cart.length > 0 && (
-          <>
+          <motion.div layout>
             <p>Total: {formatPrice(totalPrice)}</p>
             <button className="py-2 mt-4 bg-[#1c4e4e] w-full rounded-md text-white">
               Checkout
             </button>
-          </>
+          </motion.div>
         )}
 
-        {!cartStore.cart.length && (
-          <div className="flex flex-col items-center gap-12 text-2xl font-medium pt-44 opacity-75">
-            <h1>The cart is empty 😥</h1>
-            <Image src={cartIcon} alt="empty-cart" width={200} height={200} />
-          </div>
-        )}
-      </div>
-    </div>
+        <AnimatePresence>
+          {!cartStore.cart.length && (
+            <motion.div
+              animate={{ scale: 1, rotateZ: 0, opacity: 0.75 }}
+              initial={{ scale: 0.5, rotateZ: -10, opacity: 0 }}
+              exit={{ scale: 0.5, rotateZ: -10, opacity: 0 }}
+              className="flex flex-col items-center gap-12 text-2xl font-medium pt-44 opacity-75"
+            >
+              <h1>The cart is empty 😥</h1>
+              <Image src={cartIcon} alt="empty-cart" width={200} height={200} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   );
 }

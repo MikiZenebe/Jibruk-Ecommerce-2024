@@ -13,6 +13,7 @@
     "@heroicons/react": "^2.1.1",
     "@prisma/client": "^5.7.1",
     "@stripe/stripe-js": "^2.2.2",
+    "framer-motion": "^11.0.8",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "prisma": "^5.7.1",
