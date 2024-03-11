@@ -5,15 +5,14 @@ import formatPrice from "@/util/priceFormat";
 import AddCart from "./AddCart";
 
 export default function ProductDetail({ searchParams }: SearchParamTypes) {
-  console.log(searchParams);
   return (
-    <div className="flex justify-between gap-24 p-12 text-gray-700">
+    <div className="flex flex-col md:flex-row justify-between gap-6 sm:gap:12 md:gap-24 p-1  text-gray-700">
       <Image
         src={searchParams.image}
         alt={searchParams.name}
         width={400}
         height={400}
-        className="object-cover w-80 h-auto"
+        className="object-cover w-full md:w-80 h-auto"
       />
       <div className="font-medium text-gray-700">
         <h1 className="text-2xl py-2">{searchParams.name}</h1>
