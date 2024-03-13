@@ -43,6 +43,30 @@ model User {
     accounts         Account[]
     sessions         Session[]
     stripeCustomerId String?
+    orders           Order[]
+}
+
+model Order {
+    id              String    @id @default(auto()) @map("_id") @db.ObjectId
+    user            User      @relation(fields: [userId], references: [id])
+    userId          String    @db.ObjectId
+    amount          Float
+    currency        String
+    status          String
+    createdDate     DateTime  @default(now())
+    paymentIntentID String?   @unique
+    products        Product[]
+}
+
+model Product {
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    description String
+    unit_amount Float
+    image       String
+    quantity    Float   @default(0)
+    orderId     String? @db.ObjectId // Reference to the order ID
+    order       Order?  @relation(fields: [orderId], references: [id])
 }
 
 model VerificationToken {
