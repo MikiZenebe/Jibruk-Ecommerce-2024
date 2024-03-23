@@ -6,7 +6,7 @@ import { AddCartType } from "@/types/AddCartType";
 import { PrismaClient } from "@prisma/client";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2022-11-15",
+  apiVersion: "2023-10-16",
 });
 
 const prisma = new PrismaClient();
@@ -31,6 +31,7 @@ export default async function handler(
 
   //Extract the data from the body
   const { items, payment_intent_id } = req.body;
+  console.log(items, payment_intent_id);
 
   //Create the order data
   const orderData = {
@@ -38,12 +39,12 @@ export default async function handler(
     amount: calculateOrderAmount(items),
     currency: "usd",
     status: "pending",
-    paymentIntentId: payment_intent_id,
+    paymentIntentID: payment_intent_id,
     products: {
-      create: items.map((item) => ({
+      create: items.map((item: any) => ({
         name: item.name,
-        description: item.description,
-        unit_amount: item.unit_amount,
+        description: item.description || null,
+        unit_amount: parseFloat(item.unit_amount),
         image: item.image,
         quantity: item.quantity,
       })),
@@ -79,7 +80,7 @@ export default async function handler(
           amount: calculateOrderAmount(items),
           products: {
             deleteMany: {},
-            create: items.map((item) => ({
+            create: items.map((item: any) => ({
               name: item.name,
               description: item.description,
               unit_amount: item.unit_amount,
@@ -100,14 +101,12 @@ export default async function handler(
       automatic_payment_methods: { enabled: true },
     });
 
-    orderData.paymentIntentId = paymentIntent.id;
+    orderData.paymentIntentID = paymentIntent.id;
     const newOrder = await prisma.order.create({
       data: orderData,
     });
+    res.status(200).json({ paymentIntent });
   }
-
-  res.status(200).json({ payment_intent_id });
-  return;
 
   //Data necessary for the order
 }
